@@ -1,14 +1,15 @@
-use advent_of_code::template::commands::{all, download, read, scaffold, solve, time};
-use args::{parse, AppArguments};
-
-#[cfg(feature = "today")]
-use advent_of_code::template::Day;
 #[cfg(feature = "today")]
 use std::process;
 
+use advent_of_code::template::commands::{all, download, read, scaffold, solve, time};
+#[cfg(feature = "today")]
+use advent_of_code::template::Day;
+use args::{AppArguments, parse};
+
 mod args {
-    use advent_of_code::template::Day;
     use std::process;
+
+    use advent_of_code::template::Day;
 
     pub enum AppArguments {
         Download {
@@ -106,7 +107,11 @@ fn main() {
             AppArguments::Time { day, all, store } => time::handle(day, all, store),
             AppArguments::Download { day } => download::handle(day),
             AppArguments::Read { day } => read::handle(day),
-            AppArguments::Scaffold { day, download, overwrite } => {
+            AppArguments::Scaffold {
+                day,
+                download,
+                overwrite,
+            } => {
                 scaffold::handle(day, overwrite);
                 if download {
                     download::handle(day);
