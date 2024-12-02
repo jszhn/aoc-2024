@@ -4,7 +4,7 @@ use std::process;
 use advent_of_code::template::commands::{all, download, read, scaffold, solve, time};
 #[cfg(feature = "today")]
 use advent_of_code::template::Day;
-use args::{AppArguments, parse};
+use args::{parse, AppArguments};
 
 mod args {
     use std::process;
