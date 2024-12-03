@@ -55,8 +55,7 @@ pub fn part_two(input: &str) -> Option<u32> {
         let pos = diff.iter().fold(0, |acc, x| acc + ((*x > 0) as i32));
         let neg = diff.iter().fold(0, |acc, x| acc + ((*x < 0) as i32));
         if bad_diffs == 0
-            && ((pos == diff.len() as i32 && neg == 0)
-            || (neg == diff.len() as i32 && pos == 0))
+            && ((pos == diff.len() as i32 && neg == 0) || (neg == diff.len() as i32 && pos == 0))
         {
             safe += 1;
             continue;
@@ -78,7 +77,7 @@ pub fn part_two(input: &str) -> Option<u32> {
             let neg = diff.iter().fold(0, |acc, x| acc + ((*x < 0) as i32));
             if bad_diffs == 0
                 && ((pos == diff.len() as i32 && neg == 0)
-                || (neg == diff.len() as i32 && pos == 0))
+                    || (neg == diff.len() as i32 && pos == 0))
             {
                 safe += 1;
                 break;
