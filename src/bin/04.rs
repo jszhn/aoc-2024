@@ -17,7 +17,7 @@ fn search_part_one(input: &Vec<Vec<char>>, row: usize, col: usize) -> u32 {
 
     let sum = directions
         .iter()
-        .filter(|dir| {
+        .filter(|dir| { // keeps in-bounds combos
             let row_max = row as i32 + dir.1 * 3;
             let col_max = col as i32 + dir.0 * 3;
 
@@ -25,7 +25,7 @@ fn search_part_one(input: &Vec<Vec<char>>, row: usize, col: usize) -> u32 {
                 && (row_max as usize) < input.len()
                 && (col_max >= 0 && (col_max as usize) < input[0].len())
         })
-        .filter(|dir| {
+        .filter(|dir| { // if in-bounds, keep checking in direction
             (1..4)
                 .map(|i| {
                     let row_new = (row as i32 + dir.1 * i) as usize;
@@ -56,73 +56,29 @@ pub fn part_one(input: &str) -> Option<u32> {
 }
 
 fn search_part_two(input: &Vec<Vec<char>>, row: usize, col: usize) -> u32 {
-    let mut sum: u32 = 0;
-    if row <= input.len() - 3 {
-        // try left
-        if col >= 2
-            && [
-                input[row + 1][col - 1] == 'A',
-                input[row + 2][col] == 'M',
-                input[row][col - 2] == 'S',
-                input[row + 2][col - 2] == 'S',
-            ]
-            .iter()
-            .map(|c| *c as u8)
-            .sum::<u8>()
-                == 4
-        {
-            sum += 1;
-        }
+    let directions = [
+        [(1, -1), (2, 0), (0, -2), (2, -2)], // left
+        [(1, 1), (2, 0), (0, 2), (2, 2)],    // right
+        [(-1, 1), (0, 2), (-2, 0), (-2, 2)], // up
+        [(1, 1), (0, 2), (2, 0), (2, 2)],    // down
+    ];
+    let letters = ['A', 'M', 'S', 'S'];
 
-        // try right
-        if col <= input[0].len() - 3
-            && [
-                input[row + 1][col + 1] == 'A',
-                input[row + 2][col] == 'M',
-                input[row][col + 2] == 'S',
-                input[row + 2][col + 2] == 'S',
-            ]
-            .iter()
-            .map(|c| *c as u8)
-            .sum::<u8>()
-                == 4
-        {
-            sum += 1;
-        }
-
-        // try down
-        if col <= input[0].len() - 3
-            && [
-                input[row + 1][col + 1] == 'A',
-                input[row][col + 2] == 'M',
-                input[row + 2][col] == 'S',
-                input[row + 2][col + 2] == 'S',
-            ]
-            .iter()
-            .map(|c| *c as u8)
-            .sum::<u8>()
-                == 4
-        {
-            sum += 1;
-        }
-    }
-
-    if row >= 2
-        && col <= input[0].len() - 3
-        && [
-            // try up
-            input[row - 1][col + 1] == 'A',
-            input[row][col + 2] == 'M',
-            input[row - 2][col] == 'S',
-            input[row - 2][col + 2] == 'S',
-        ]
+    let sum: u32 = directions
         .iter()
-        .map(|c| *c as u8)
-        .sum::<u8>()
-            == 4
-    {
-        sum += 1;
-    }
+        .filter(|dir| {
+            dir.iter().zip(letters).all(|((dr, dc), letter)| {
+                let nr = row as i32 + dr;
+                let nc = col as i32 + dc;
+
+                nr >= 0
+                    && nr < input.len() as i32
+                    && nc >= 0
+                    && nc < input[0].len() as i32
+                    && input[nr as usize][nc as usize] == letter
+            })
+        })
+        .count() as u32;
 
     sum
 }
