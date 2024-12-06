@@ -17,7 +17,8 @@ fn search_part_one(input: &Vec<Vec<char>>, row: usize, col: usize) -> u32 {
 
     let sum = directions
         .iter()
-        .filter(|dir| { // keeps in-bounds combos
+        .filter(|dir| {
+            // keeps in-bounds combos
             let row_max = row as i32 + dir.1 * 3;
             let col_max = col as i32 + dir.0 * 3;
 
@@ -25,7 +26,8 @@ fn search_part_one(input: &Vec<Vec<char>>, row: usize, col: usize) -> u32 {
                 && (row_max as usize) < input.len()
                 && (col_max >= 0 && (col_max as usize) < input[0].len())
         })
-        .filter(|dir| { // if in-bounds, keep checking in direction
+        .filter(|dir| {
+            // if in-bounds, keep checking in direction
             (1..4)
                 .map(|i| {
                     let row_new = (row as i32 + dir.1 * i) as usize;
@@ -67,6 +69,7 @@ fn search_part_two(input: &Vec<Vec<char>>, row: usize, col: usize) -> u32 {
     let sum: u32 = directions
         .iter()
         .filter(|dir| {
+            // matches each letter with offset
             dir.iter().zip(letters).all(|((dr, dc), letter)| {
                 let nr = row as i32 + dr;
                 let nc = col as i32 + dc;
@@ -79,7 +82,6 @@ fn search_part_two(input: &Vec<Vec<char>>, row: usize, col: usize) -> u32 {
             })
         })
         .count() as u32;
-
     sum
 }
 
