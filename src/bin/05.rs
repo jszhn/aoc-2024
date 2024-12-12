@@ -62,7 +62,13 @@ pub fn part_one(input: &str) -> Option<u32> {
     Some(sum)
 }
 
-fn dfs(v: u32, adj: &HashMap<u32, Vec<u32>>, visited: &mut HashSet<u32>, stack: &mut Vec<u32>, candidates: &HashSet<&u32>) {
+fn dfs(
+    v: u32,
+    adj: &HashMap<u32, Vec<u32>>,
+    visited: &mut HashSet<u32>,
+    stack: &mut Vec<u32>,
+    candidates: &HashSet<&u32>,
+) {
     visited.insert(v);
 
     if let Some(neighbours) = adj.get(&v) {
@@ -97,10 +103,13 @@ pub fn part_two(input: &str) -> Option<u32> {
         .iter()
         .filter(|u| !validate_topological_order(u, &adj))
         .collect();
-    let sum: u32 = incorrect.iter().map(|u| {
-        let sorted = topological_sort(&adj, u);
-        sorted[sorted.len() / 2]
-    }).sum();
+    let sum: u32 = incorrect
+        .iter()
+        .map(|u| {
+            let sorted = topological_sort(&adj, u);
+            sorted[sorted.len() / 2]
+        })
+        .sum();
     Some(sum)
 }
 
